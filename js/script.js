@@ -1,5 +1,6 @@
 const profileInfo = document.querySelector(".overview");
 const username = "CatMonge";
+const repoList = document.querySelector(".repo-list");
 
 const gitUserInfo= async function () {
     const usersInfo= await fetch (`https://api.github.com/users/${username}`);
@@ -23,4 +24,22 @@ div.innerHTML = `<figure>
 </div> `;
 
 profileInfo.append(div); 
+getRepos();
+};
+
+const getRepos = async function () {
+    const userRepos = await fetch (`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+    const repoData = await userRepos.json();
+//console.log(userRepos);
+repoInformation(repoData)
+
+};
+
+const repoInformation = async function (repos){
+for (const repo of repos){
+    const repoItem = document.createElement("li");
+    repoItem.classList.add("repo");
+    repoItem.innerHTML = `<h3>${repo.name}</h3>`;
+    repoList.append(repoItem);
+}
 };
